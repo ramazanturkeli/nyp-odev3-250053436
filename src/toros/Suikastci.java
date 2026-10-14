@@ -1,23 +1,37 @@
 package toros;
 
 public class Suikastci extends Karakter {
-    private int gizlilikOrani;
+    private boolean gizli;
 
-    public Suikastci(String ad, int can, int guc, Silah silah, int gizlilikOrani) {
-        super(ad, can, guc, silah);
-        this.gizlilikOrani = gizlilikOrani;
+    public Suikastci(String ad, Lonca lonca) {
+        super(ad, lonca);
+        this.gizli = false;
+    }
+
+    public void gizlen() {
+        hayattaOldugunuDogrula();
+        this.gizli = true;
+        kayitYaz("gölgelere karıştı");
     }
 
     @Override
-    public void saldir() {
-        System.out.println(getAd() + " gölgelerin arasından sessizce süzülüyor ve kritik darbe vuruyor! Gizlilik Oranı: %" + gizlilikOrani);
+    public int saldir() {
+        int temelHasar = super.saldir();
+        if (gizli) {
+            gizli = false; // Saldırı sonrası gizlilik bozulur
+            return temelHasar * 2;
+        }
+        return temelHasar;
     }
 
-    public int getGizlilikOrani() {
-        return gizlilikOrani;
+    @Override
+    public void bilgiGoster() {
+        super.bilgiGoster();
+        System.out.println("  -> Gizli Mi?: " + gizli);
     }
 
-    public void setGizlilikOrani(int gizlilikOrani) {
-        this.gizlilikOrani = gizlilikOrani;
+    @Override
+    public String toString() {
+        return "Suikastci [" + getAd() + ", seviye " + getSeviye() + ", gizli: " + gizli + "]";
     }
 }
